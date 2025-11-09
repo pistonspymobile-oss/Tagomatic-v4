@@ -1,0 +1,77 @@
+name: Build Mac Executable
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'car_identifier_gui_qt_v3_final_merged.py'
+      - 'race_metadata_parser.py'
+      - 'TagOmatic-v4.2-mac.spec'
+      - 'requirements.txt'
+      - '.github/workflows/build-mac.yml'
+  workflow_dispatch:  # Allows manual triggering
+  release:
+    types: [created]  # Trigger on new releases
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install Homebrew dependencies
+      run: |
+        brew install exiftool
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+        
+    - name: Verify ExifTool installation
+      run: |
+        which exiftool
+        exiftool -ver
+        
+    - name: Build executable with PyInstaller
+      run: |
+        pyinstaller TagOmatic-v4.2-mac.spec --clean --noconfirm
+        
+    - name: Verify executable was created
+      run: |
+        ls -lh dist/
+        if [ -f "dist/TagOmatic-v4.2" ]; then
+          echo "✅ Executable created successfully"
+          file dist/TagOmatic-v4.2
+        else
+          echo "❌ Executable not found!"
+          exit 1
+        fi
+        
+    - name: Upload executable as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TagOmatic-v4.2-mac
+        path: dist/TagOmatic-v4.2
+        retention-days: 30
+        
+    - name: Create release asset (if triggered by release)
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/TagOmatic-v4.2
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

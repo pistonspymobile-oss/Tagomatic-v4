@@ -1,0 +1,61 @@
+# Build artifacts
+build/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Large model files (users can add these separately)
+*.pt
+*.pth
+*.onnx
+*.zip
+
+# ExifTool files (Windows only - Mac uses system ExifTool)
+exiftool.exe
+exiftool_files/
+
+# Test data
+racetest/
+testimages/
+crops_output/
+Test Images/
+
+# Logs
+*.log
+log.log
+crash_log.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.spec.bak
+
+# Certificates (shouldn't be in repo)
+certs/
+
+# User-specific
+user_knowledge_base.json.backup
+probe_results_*.json
+probe_misidentified_results.json
+
+# PDFs (large test files)
+*.pdf
+
+# Old build files
+TagOmatic-v3.0.spec
+TagOmatic-v4.0.spec
+
