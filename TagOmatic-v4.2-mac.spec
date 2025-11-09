@@ -14,10 +14,10 @@ a = Analysis(
         # This keeps the executable smaller and uses system ExifTool
     ],
     datas=[
-        # Only include assets if the folder exists (will be checked at build time)
-        # ('assets', 'assets'),  # Uncomment if assets folder is present
+        ('assets', 'assets'),  # Icons, logos, and UI images
         # ONNX model files for intelligent vehicle detection (optional - only include if file exists)
         # Note: Users can place .onnx files next to the executable if needed
+        # ('yolov10n.onnx', '.'),  # Uncomment if available
         # Developer-approved knowledge base (optional - can also be placed next to exe)
         # ('approved_knowledge_base.json', '.'),  # Uncomment to bundle approved KB with exe
     ],
